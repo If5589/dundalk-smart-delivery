@@ -1,90 +1,36 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#101827">
-  <meta name="description" content="Private, local-first delivery route planner for personal use.">
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css">
-  <title>Dundalk Smart Delivery</title>
-</head>
-<body>
-  <header class="topbar">
-    <div class="brand-mark">DS</div>
-    <div class="brand-copy">
-      <div class="eyebrow">PERSONAL DELIVERY ASSISTANT</div>
-      <h1>Dundalk Smart Delivery</h1>
-    </div>
-    <button id="installHint" class="icon-button" aria-label="Installation help" title="Install help">＋</button>
-  </header>
-
-  <main>
-    <section class="welcome panel">
-      <div>
-        <p class="eyebrow">YOUR DAILY OVERVIEW</p>
-        <h2>Ready for your next route?</h2>
-        <p class="muted">Keep your stops organised. Your saved delivery records stay on this device.</p>
-      </div>
-      <div class="today-stat"><strong id="todayCount">0</strong><span>DELIVERIES TODAY</span></div>
-    </section>
-
-    <section class="stats-grid">
-      <article class="stat-card"><span class="stat-label">Saved addresses</span><strong id="addressCount">0</strong></article>
-      <article class="stat-card"><span class="stat-label">All-time drops</span><strong id="dropCount">0</strong></article>
-    </section>
-
-    <section class="panel section-panel" id="addSection">
-      <div class="section-heading">
-        <div><p class="eyebrow">NEW STOPS</p><h2>Add delivery addresses</h2></div>
-        <span class="step-badge">01</span>
-      </div>
-      <label for="addressInput">Delivery address</label>
-      <textarea id="addressInput" rows="2" placeholder="e.g. 15 Park Street, Dundalk, Co. Louth"></textarea>
-      <div class="button-row">
-        <button id="addAddress" class="button primary">Add address</button>
-        <button id="cameraButton" class="button secondary">Scan / photograph</button>
-      </div>
-      <input id="cameraInput" type="file" accept="image/*" capture="environment" hidden>
-      <p class="hint">Tip: On iPhone, use Live Text in the photo to copy the printed address, then paste it here. Direct automatic OCR will be added after this secure starter version.</p>
-      <div id="pendingList" class="pending-list"></div>
-    </section>
-
-    <section class="panel section-panel">
-      <div class="section-heading">
-        <div><p class="eyebrow">ROUTE PLANNER</p><h2>Optimise today's stops</h2></div>
-        <span class="step-badge">02</span>
-      </div>
-      <p class="muted small">For route calculation, addresses are sent to OpenStreetMap's public geocoder and coordinates to the public OSRM demo routing service. Do not use this feature for sensitive addresses unless you accept that disclosure.</p>
-      <label class="consent-row"><input type="checkbox" id="routeConsent"> <span>I agree to send today's stop addresses to the public mapping services for route calculation.</span></label>
-      <button id="optimiseButton" class="button primary full">Optimise route</button>
-      <div id="routeResult" class="route-result" aria-live="polite"></div>
-    </section>
-
-    <section class="panel section-panel">
-      <div class="section-heading">
-        <div><p class="eyebrow">YOUR ADDRESS BOOK</p><h2>Saved delivery history</h2></div>
-        <span class="step-badge">03</span>
-      </div>
-      <input id="searchInput" class="search" type="search" placeholder="Search saved addresses">
-      <div id="historyList" class="history-list"></div>
-    </section>
-
-    <section class="panel privacy-panel">
-      <div class="privacy-icon">⌑</div>
-      <div>
-        <h3>Private by design</h3>
-        <p class="muted small">This starter app stores your address book and delivery history in this Safari browser on this iPhone. It has no account, no analytics and no cloud database. Clearing Safari website data, deleting the website data, or changing browser/device may erase your records. Export a backup regularly.</p>
-        <div class="button-row">
-          <button id="exportButton" class="button secondary">Export backup</button>
-          <label class="button secondary file-label">Import backup<input id="importInput" type="file" accept="application/json" hidden></label>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer>DU NDALK SMART DELIVERY <span>•</span> PERSONAL V1.0 STARTER</footer>
-  <div id="toast" class="toast" role="status"></div>
-  <script src="app.js"></script>
-</body>
-</html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101827"><title>Dundalk Smart Delivery</title>
+<link rel="manifest" href="./manifest.json"><link rel="stylesheet" href="./styles.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+</head><body>
+<header class="topbar"><div class="brand"><div class="logo">DS</div><div><small>PERSONAL DELIVERY ASSISTANT</small><h1>Dundalk Smart Delivery</h1></div></div><button id="locateButton" class="icon-button" aria-label="Set current location">◎</button></header>
+<main>
+<section class="overview card"><div><p class="eyebrow">TODAY'S DELIVERY ROUTE</p><h2>Plan. Start. Deliver. Next.</h2><p class="muted">Your personal multi-stop delivery assistant.</p></div><div class="today"><strong id="todayCount">0</strong><span>DONE TODAY</span></div></section>
+<section class="stats"><div class="card"><span>Stops in route</span><strong id="stopCount">0</strong></div><div class="card"><span>Completed</span><strong id="completedCount">0</strong></div></section>
+<section class="card section">
+<div class="section-heading"><div><p class="eyebrow">01 · ADD DELIVERIES</p><h2>Delivery addresses</h2></div><span class="step">01</span></div>
+<label for="addressInput">Eircode, house number, street or business</label><input id="addressInput" placeholder="e.g. A91 N6V4 or 15 Park Street, Dundalk" autocomplete="street-address">
+<div class="actions"><button id="findButton" class="primary">Find address</button><button id="scanButton" class="secondary">Scan parcel</button><input id="scanInput" type="file" accept="image/*" capture="environment" hidden></div>
+<p id="scanStatus" class="hint">Take a clear photo of the parcel label. Check the recognised address before adding it.</p>
+<div id="suggestions" class="suggestions" hidden></div>
+<div class="subheading"><b>Stops to deliver</b><span id="routeCount">0 stops</span></div><div id="stopList" class="stop-list"><div class="empty">No delivery stops added yet.</div></div>
+<div class="actions"><button id="clearStops" class="secondary">Clear all</button><button id="optimiseButton" class="primary">Optimise route</button></div>
+<label class="consent"><input type="checkbox" id="mapConsent"> I agree to send addresses/coordinates to public OpenStreetMap and Valhalla routing services to find and calculate routes.</label>
+</section>
+<section class="card section">
+<div class="section-heading"><div><p class="eyebrow">02 · ROUTE MAP</p><h2>All delivery points</h2></div><span class="step">02</span></div>
+<div class="mode-picker"><span>Travel mode</span><label class="mode"><input type="radio" name="mode" value="auto" checked><span>🚗 Car</span></label><label class="mode"><input type="radio" name="mode" value="pedestrian"><span>🚶 Walk</span></label></div>
+<div id="map"></div><div id="routeSummary" class="route-summary">Add stops, set your current location and optimise the route.</div>
+<div id="activeCard" class="active-card"><div class="active-kicker">CURRENT DELIVERY</div><div id="activeTitle" class="active-title">No active route</div><div id="activeAddress" class="active-address">Optimise your stops to begin.</div><div class="actions"><button id="startButton" class="primary" disabled>▶ Start delivery</button><button id="nextButton" class="secondary" disabled>Next stop →</button></div><p class="hint">Start opens turn-by-turn navigation in Google Maps. After completing a drop, return here and tap Next stop.</p></div>
+<div class="actions"><a id="googleRouteLink" class="secondary link-button disabled" target="_blank" rel="noopener">Open full route in Google Maps</a></div>
+<p class="hint">The app shows the planned route and stop order. Google Maps provides live turn-by-turn navigation, voice guidance and current traffic where available. The app itself does not yet provide live voice navigation.</p>
+</section>
+<section class="card section"><div class="section-heading"><div><p class="eyebrow">03 · DELIVERY HISTORY</p><h2>Completed deliveries</h2></div><span class="step">03</span></div>
+<div id="historyList" class="stop-list"><div class="empty">No completed deliveries yet.</div></div>
+<div class="actions"><button id="exportButton" class="secondary">Export backup</button><label class="secondary file-label">Import backup<input id="importInput" type="file" accept="application/json" hidden></label></div></section>
+<p class="footer-note">Personal-use version · Data is stored locally in this browser on this device.</p>
+</main><div id="toast" role="status" aria-live="polite"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script><script src="./app.js"></script>
+</body></html>

@@ -1,34 +1,18 @@
-# Dundalk Smart Delivery — V1.0 Starter
+# Dundalk Smart Delivery V3.0
 
-A personal, local-first Progressive Web App starter for iPhone Safari.
-
-## Included
-- English dashboard
-- Add multiple delivery stops manually
-- Local address book and delivery history using IndexedDB
-- Duplicate address matching (normalised text)
-- Delivery counter and last-delivered date
-- JSON backup export/import
-- Route-order estimate for up to 8 stops, only after explicit consent
-- Opens the ordered stops in Google Maps
+V3 adds a delivery workflow:
+- Add stops using OpenStreetMap address search or parcel-label OCR.
+- Set the current GPS location as route origin (permission required).
+- Select car or walking mode.
+- Use Valhalla public routing API to calculate a road-time matrix, order up to 8 stops, and request route geometry.
+- See numbered A/B/C stops and route line on the map.
+- Tap Start delivery to open Google Maps turn-by-turn navigation for the current stop.
+- After completing a drop, return to the PWA and tap Next stop. The app records the completed delivery locally and advances to the next stop.
+- Open the full route in Google Maps.
+- Export/import local delivery history.
 
 ## Important limitations
-- This is a starter MVP, not a fully tested commercial navigation product.
-- Camera capture is a placeholder. On iPhone, use Photos Live Text to copy printed address text. Automatic in-app OCR is not included yet.
-- Route optimisation sends entered addresses to the public OpenStreetMap Nominatim geocoder and sends coordinates to the public OSRM demo server. Review their policies and do not send sensitive addresses unless you accept this disclosure.
-- Public demo routing is rate-limited, may be unavailable, and does not provide guaranteed live traffic.
-- Address records are stored in Safari's local IndexedDB. They are not encrypted by this app. Protect the iPhone with a strong passcode and Face ID, do not share the device, and export backups only to a private location.
-- If Safari website data is cleared, local records may be deleted. Export backups regularly.
-- Hosting this PWA on GitHub Pages makes the source files public if the repository is public. Do not put real customer data, backups, API keys, or secrets in the repository.
-- This app does not track driver location and does not send customer history to a cloud database.
-
-## Publish using GitHub Pages from iPhone
-1. Create a GitHub account and a new **public** repository, for example `dundalk-smart-delivery`.
-2. In the repository, upload the contents of this ZIP (not the ZIP itself): `index.html`, `styles.css`, `app.js`, `manifest.json`, `sw.js`.
-3. Open repository Settings → Pages.
-4. Under Build and deployment, choose Deploy from a branch; select `main` and `/ (root)`, then Save.
-5. Wait for GitHub Pages to publish. Open the published `https://YOUR-USERNAME.github.io/dundalk-smart-delivery/` address in Safari.
-6. Tap Share → Add to Home Screen.
-
-## Security notes
-This app is designed to minimise data collection, but a hosted PWA cannot guarantee that website code is tamper-proof or that the device's browser storage is encrypted by the app. Review the source before using real customer data. Keep iOS updated and use a strong device passcode.
+This is not a full Google Maps navigation engine. Google Maps provides live turn-by-turn voice guidance, live traffic and its own vehicle/navigation UI after Start delivery is tapped. Return to this app after each drop and tap Next stop to launch the next destination.
+The app's route map and route estimates use public OpenStreetMap/Valhalla data. Public demo servers have fair-use limits and no uptime guarantee; they do not guarantee live traffic. Address search uses public Nominatim; not every Irish Eircode is indexed. Verify every selected address and route before driving.
+The optimiser uses current GPS location if permitted; otherwise it starts at the first stop. Up to 8 stops. It uses approximate road-time optimisation, not a guarantee of globally best delivery schedule.
+Addresses/coordinates are sent to public mapping services when searching or calculating routes. Local history is stored in IndexedDB on this device and is not app-level encrypted. Protect your iPhone with a strong passcode; keep backups private.
