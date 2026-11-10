@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101827">
+  <meta name="description" content="Private, local-first delivery route planner for personal use.">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+  <title>Dundalk Smart Delivery</title>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark">DS</div>
+    <div class="brand-copy">
+      <div class="eyebrow">PERSONAL DELIVERY ASSISTANT</div>
+      <h1>Dundalk Smart Delivery</h1>
+    </div>
+    <button id="installHint" class="icon-button" aria-label="Installation help" title="Install help">＋</button>
+  </header>
+
+  <main>
+    <section class="welcome panel">
+      <div>
+        <p class="eyebrow">YOUR DAILY OVERVIEW</p>
+        <h2>Ready for your next route?</h2>
+        <p class="muted">Keep your stops organised. Your saved delivery records stay on this device.</p>
+      </div>
+      <div class="today-stat"><strong id="todayCount">0</strong><span>DELIVERIES TODAY</span></div>
+    </section>
+
+    <section class="stats-grid">
+      <article class="stat-card"><span class="stat-label">Saved addresses</span><strong id="addressCount">0</strong></article>
+      <article class="stat-card"><span class="stat-label">All-time drops</span><strong id="dropCount">0</strong></article>
+    </section>
+
+    <section class="panel section-panel" id="addSection">
+      <div class="section-heading">
+        <div><p class="eyebrow">NEW STOPS</p><h2>Add delivery addresses</h2></div>
+        <span class="step-badge">01</span>
+      </div>
+      <label for="addressInput">Delivery address</label>
+      <textarea id="addressInput" rows="2" placeholder="e.g. 15 Park Street, Dundalk, Co. Louth"></textarea>
+      <div class="button-row">
+        <button id="addAddress" class="button primary">Add address</button>
+        <button id="cameraButton" class="button secondary">Scan / photograph</button>
+      </div>
+      <input id="cameraInput" type="file" accept="image/*" capture="environment" hidden>
+      <p class="hint">Tip: On iPhone, use Live Text in the photo to copy the printed address, then paste it here. Direct automatic OCR will be added after this secure starter version.</p>
+      <div id="pendingList" class="pending-list"></div>
+    </section>
+
+    <section class="panel section-panel">
+      <div class="section-heading">
+        <div><p class="eyebrow">ROUTE PLANNER</p><h2>Optimise today's stops</h2></div>
+        <span class="step-badge">02</span>
+      </div>
+      <p class="muted small">For route calculation, addresses are sent to OpenStreetMap's public geocoder and coordinates to the public OSRM demo routing service. Do not use this feature for sensitive addresses unless you accept that disclosure.</p>
+      <label class="consent-row"><input type="checkbox" id="routeConsent"> <span>I agree to send today's stop addresses to the public mapping services for route calculation.</span></label>
+      <button id="optimiseButton" class="button primary full">Optimise route</button>
+      <div id="routeResult" class="route-result" aria-live="polite"></div>
+    </section>
+
+    <section class="panel section-panel">
+      <div class="section-heading">
+        <div><p class="eyebrow">YOUR ADDRESS BOOK</p><h2>Saved delivery history</h2></div>
+        <span class="step-badge">03</span>
+      </div>
+      <input id="searchInput" class="search" type="search" placeholder="Search saved addresses">
+      <div id="historyList" class="history-list"></div>
+    </section>
+
+    <section class="panel privacy-panel">
+      <div class="privacy-icon">⌑</div>
+      <div>
+        <h3>Private by design</h3>
+        <p class="muted small">This starter app stores your address book and delivery history in this Safari browser on this iPhone. It has no account, no analytics and no cloud database. Clearing Safari website data, deleting the website data, or changing browser/device may erase your records. Export a backup regularly.</p>
+        <div class="button-row">
+          <button id="exportButton" class="button secondary">Export backup</button>
+          <label class="button secondary file-label">Import backup<input id="importInput" type="file" accept="application/json" hidden></label>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>DU NDALK SMART DELIVERY <span>•</span> PERSONAL V1.0 STARTER</footer>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>

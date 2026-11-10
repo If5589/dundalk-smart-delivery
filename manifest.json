@@ -1,0 +1,10 @@
+{
+  "name": "Dundalk Smart Delivery",
+  "short_name": "Smart Delivery",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f3f6fa",
+  "theme_color": "#101827",
+  "description": "Personal local-first delivery assistant",
+  "icons": []
+}
